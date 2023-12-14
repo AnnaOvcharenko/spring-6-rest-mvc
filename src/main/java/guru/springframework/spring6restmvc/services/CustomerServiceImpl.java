@@ -73,6 +73,23 @@ public class CustomerServiceImpl implements CustomerService {
                 .version(customer.getVersion())
                 .build();
         customerMap.put(newCustomer.getId(), newCustomer);
+        log.debug("Add customer - in service");
         return newCustomer;
+    }
+
+    @Override
+    public Customer updateCustomer(UUID id, Customer customer) {
+        Customer updatedCustomer = customerMap.get(id);
+        updatedCustomer.setVersion(customer.getVersion());
+        updatedCustomer.setName(customer.getName());
+        updatedCustomer.setLastModifiedDate(LocalDateTime.now());
+        log.debug("Update customer - in service");
+        return updatedCustomer;
+    }
+
+    @Override
+    public void deleteCustomer(UUID id) {
+        log.debug("Delete customer - in service");
+        customerMap.remove(id);
     }
 }
