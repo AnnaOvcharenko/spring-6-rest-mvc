@@ -23,11 +23,18 @@ import java.util.UUID;
 public class BeerController {
     private final BeerService beerService;
 
+    @PatchMapping("/{beerId}")
+    public ResponseEntity patchBeer(@PathVariable("beerId") UUID id, @RequestBody Beer beer) {
+        log.debug("Patch beer - in controller");
+        beerService.patchBeer(id, beer);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("/{beerId}")
-    public ResponseEntity deleteBeer(@PathVariable("beerId") UUID id){
+    public ResponseEntity deleteBeer(@PathVariable("beerId") UUID id) {
         log.debug("Delete beer - in controller");
         beerService.deleteBeer(id);
-        return  new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{beerId}")
