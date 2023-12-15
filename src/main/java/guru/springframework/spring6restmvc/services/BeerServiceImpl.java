@@ -143,5 +143,6 @@ public class BeerServiceImpl implements BeerService {
         }
 
         patchedBeer.setUpdateDate(LocalDateTime.now());
+        log.debug("Patch beer - in service");
     }
 }

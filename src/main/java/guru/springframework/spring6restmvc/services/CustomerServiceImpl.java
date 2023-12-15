@@ -3,6 +3,7 @@ package guru.springframework.spring6restmvc.services;
 import guru.springframework.spring6restmvc.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,9 +16,9 @@ import java.util.*;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-    private Map<UUID,Customer> customerMap;
+    private Map<UUID, Customer> customerMap;
 
-    public CustomerServiceImpl(){
+    public CustomerServiceImpl() {
         log.debug("Set up map of customers in Customer Service");
         this.customerMap = new HashMap<>();
 
@@ -45,9 +46,9 @@ public class CustomerServiceImpl implements CustomerService {
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        customerMap.put(customer1.getId(),customer1);
-        customerMap.put(customer2.getId(),customer2);
-        customerMap.put(customer3.getId(),customer3);
+        customerMap.put(customer1.getId(), customer1);
+        customerMap.put(customer2.getId(), customer2);
+        customerMap.put(customer3.getId(), customer3);
 
     }
 
@@ -91,5 +92,18 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(UUID id) {
         log.debug("Delete customer - in service");
         customerMap.remove(id);
+    }
+
+    @Override
+    public void patchCustomer(UUID id, Customer customer) {
+        Customer patchedCustomer = customerMap.get(id);
+        if (StringUtils.hasText(customer.getName())) {
+            patchedCustomer.setName(customer.getName());
+        }
+        if (customer.getVersion() != null) {
+            patchedCustomer.setVersion(customer.getVersion());
+        }
+        patchedCustomer.setLastModifiedDate(LocalDateTime.now());
+        log.debug("Patch customer - in service");
     }
 }

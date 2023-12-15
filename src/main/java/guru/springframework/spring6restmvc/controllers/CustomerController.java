@@ -24,15 +24,24 @@ public class CustomerController {
 
     private final CustomerService service;
 
+    @PatchMapping("/{customerId}")
+    public ResponseEntity patchCustomer(@PathVariable("customerId") UUID id,
+                                        @RequestBody Customer customer){
+        log.debug("Patch customer - in controller");
+        service.patchCustomer(id, customer);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("/{customerId}")
-    public ResponseEntity deleteCustomer(@PathVariable("customerId") UUID id){
+    public ResponseEntity deleteCustomer(@PathVariable("customerId") UUID id) {
         log.debug("Delete customer - in controller");
         service.deleteCustomer(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{customerId}")
-    public ResponseEntity updateCustomer(@PathVariable("customerId") UUID id, @RequestBody Customer customer){
+    public ResponseEntity updateCustomer(@PathVariable("customerId") UUID id,
+                                         @RequestBody Customer customer) {
         Customer updatedCustomer = service.updateCustomer(id, customer);
         log.debug("Update customer - in controller");
         return new ResponseEntity(HttpStatus.NO_CONTENT);
