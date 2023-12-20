@@ -6,6 +6,7 @@ import guru.springframework.spring6restmvc.services.BeerService;
 import guru.springframework.spring6restmvc.services.BeerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -45,19 +47,33 @@ class BeerControllerTest {
     }
 
     @Test
-    void updateBeer() throws Exception {
+    void testDeleteBeer() throws Exception {
+        Beer beer = beerServiceImpl.listBeers().get(0);
+
+        mockMvc.perform(delete("/api/v1/beer/" + beer.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+
+        verify(beerService).deleteBeer(uuidArgumentCaptor.capture());
+        assertThat(uuidArgumentCaptor.getValue()).isEqualTo(beer.getId());
+    }
+
+    @Test
+    void testUpdateBeer() throws Exception {
         Beer beer = beerServiceImpl.listBeers().get(0);
 
         mockMvc.perform(put("/api/v1/beer/" + beer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(beer)));
+                .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isNoContent());
 
         verify(beerService).updateBeer(any(UUID.class), any(Beer.class));
     }
 
     @Test
-    void addBeer() throws Exception {
+    void testAddBeer() throws Exception {
         Beer beer = beerServiceImpl.listBeers().get(0);
         beer.setId(null);
         beer.setVersion(null);
@@ -73,7 +89,7 @@ class BeerControllerTest {
     }
 
     @Test
-    void listBeers() throws Exception {
+    void testListBeers() throws Exception {
         given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
 
         mockMvc.perform(get("/api/v1/beer")
@@ -84,7 +100,7 @@ class BeerControllerTest {
     }
 
     @Test
-    void getBeerById() throws Exception {
+    void testGetBeerById() throws Exception {
         Beer testBeer = beerServiceImpl.listBeers().get(0);
 
         given(beerService.getBeerById(testBeer.getId())).willReturn(testBeer);
