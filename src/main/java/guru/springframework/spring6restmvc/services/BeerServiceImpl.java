@@ -86,7 +86,7 @@ public class BeerServiceImpl implements BeerService {
                 .beerStyle(beer.getBeerStyle())
                 .price(beer.getPrice())
                 .upc(beer.getUpc())
-                .version(beer.getVersion())
+                //.version(beer.getVersion())
                 .build();
         beerMap.put(savedBeer.getId(), savedBeer);
 
@@ -103,7 +103,7 @@ public class BeerServiceImpl implements BeerService {
         updated.setUpc(beer.getUpc());
         updated.setPrice(beer.getPrice());
         updated.setQuantityOnHand(beer.getQuantityOnHand());
-        updated.setVersion(beer.getVersion());
+       // updated.setVersion(beer.getVersion());
         log.debug("Update beer - in service");
         return updated;
     }
@@ -122,9 +122,9 @@ public class BeerServiceImpl implements BeerService {
             patchedBeer.setBeerName(beer.getBeerName());
         }
 
-        if (beer.getVersion() != null) {
-            patchedBeer.setVersion(beer.getVersion());
-        }
+//        if (beer.getVersion() != null) {
+//            patchedBeer.setVersion(beer.getVersion());
+//        }
 
         if (beer.getBeerStyle() != null) {
             patchedBeer.setBeerStyle(beer.getBeerStyle());

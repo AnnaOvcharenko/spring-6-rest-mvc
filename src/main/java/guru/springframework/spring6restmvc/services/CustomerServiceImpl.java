@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .createDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .name(customer.getName())
-                .version(customer.getVersion())
+//                .version(customer.getVersion())
                 .build();
         customerMap.put(newCustomer.getId(), newCustomer);
         log.debug("Add customer - in service");
@@ -81,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO updateCustomer(UUID id, CustomerDTO customer) {
         CustomerDTO updatedCustomer = customerMap.get(id);
-        updatedCustomer.setVersion(customer.getVersion());
+//        updatedCustomer.setVersion(customer.getVersion());
         updatedCustomer.setName(customer.getName());
         updatedCustomer.setLastModifiedDate(LocalDateTime.now());
         log.debug("Update customer - in service");
@@ -100,9 +100,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (StringUtils.hasText(customer.getName())) {
             patchedCustomer.setName(customer.getName());
         }
-        if (customer.getVersion() != null) {
-            patchedCustomer.setVersion(customer.getVersion());
-        }
+//        if (customer.getVersion() != null) {
+//            patchedCustomer.setVersion(customer.getVersion());
+//        }
         patchedCustomer.setLastModifiedDate(LocalDateTime.now());
         log.debug("Patch customer - in service");
     }
